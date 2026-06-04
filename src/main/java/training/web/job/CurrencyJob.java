@@ -5,9 +5,13 @@ import org.springframework.stereotype.Component;
 
 import training.web.config.MqttPublisher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class CurrencyJob {
 
+    private static final Logger logger = LoggerFactory.getLogger(CurrencyJob.class.getName());
     private final MqttPublisher mqttPublisher;
 
     public CurrencyJob(MqttPublisher mqttPublisher) {
@@ -23,10 +27,10 @@ public class CurrencyJob {
 
             mqttPublisher.publish("test/topic", message);
 
-            System.out.println("PUBLISHED: " + message);
+            logger.info("PUBLISHED: {}", message);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("CurrencyJob execution failed", e);
         }
     }
 }
